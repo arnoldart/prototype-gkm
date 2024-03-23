@@ -37,7 +37,12 @@ public class InputReader : MonoBehaviour, Controls.IGameplayActions
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (!context.performed) {return;}
+        if (!context.performed) {return;} 
         JumpEvent?.Invoke();
+    }
+
+    public void OnLook(InputAction.CallbackContext context)
+    {
+        
     }
 }
