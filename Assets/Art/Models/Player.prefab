@@ -2316,9 +2316,10 @@ GameObject:
   m_Component:
   - component: {fileID: 8313811380389494220}
   - component: {fileID: 5763359004480863017}
-  - component: {fileID: 230862081366087269}
   - component: {fileID: 7783893213234411320}
   - component: {fileID: 6521772447972545975}
+  - component: {fileID: 230862081366087269}
+  - component: {fileID: 6807102809579932855}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2357,22 +2358,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be33133af14581f4a800f84dff3d68ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &230862081366087269
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8104241535934205836}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 580570eaa6ee101408c8145054f22a0d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <InputReader>k__BackingField: {fileID: 5763359004480863017}
-  <Controller>k__BackingField: {fileID: 6521772447972545975}
-  <Animator>k__BackingField: {fileID: 7783893213234411320}
-  <FreeLookMovementSpeed>k__BackingField: 3
 --- !u!95 &7783893213234411320
 Animator:
   serializedVersion: 5
@@ -2420,6 +2405,38 @@ CharacterController:
   m_SkinWidth: 0.025
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0.875, z: 0}
+--- !u!114 &230862081366087269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8104241535934205836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 580570eaa6ee101408c8145054f22a0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <InputReader>k__BackingField: {fileID: 5763359004480863017}
+  <Controller>k__BackingField: {fileID: 6521772447972545975}
+  <Animator>k__BackingField: {fileID: 7783893213234411320}
+  <FreeLookMovementSpeed>k__BackingField: 3
+  <RotationDamping>k__BackingField: 10
+  <JumpForce>k__BackingField: 10
+  <ForceReceiver>k__BackingField: {fileID: 6807102809579932855}
+--- !u!114 &6807102809579932855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8104241535934205836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59db1d4e0ddce4641844779b3b3908db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Controller: {fileID: 6521772447972545975}
 --- !u!1 &8280926237894529583
 GameObject:
   m_ObjectHideFlags: 0
