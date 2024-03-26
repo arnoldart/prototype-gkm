@@ -28,6 +28,7 @@ public class PlayerJumpState : PlayerBaseState
         if (stateMachine.Controller.velocity.y <= 0)
         {
             stateMachine.SwitchState(new PlayerFallingState(stateMachine));
+            return;
         }
     }
 

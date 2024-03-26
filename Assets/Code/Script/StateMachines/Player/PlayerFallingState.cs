@@ -26,6 +26,7 @@ public class PlayerFallingState : PlayerBaseState
         if (stateMachine.Controller.isGrounded)
         {
             stateMachine.SwitchState(new PlayerFreeLookState(stateMachine));
+            return;
         }
     }
 
