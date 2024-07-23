@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class PlayerFreeLookState : PlayerBaseState
@@ -17,7 +18,9 @@ public class PlayerFreeLookState : PlayerBaseState
 
     public override void Enter()
     {
+        // stateMachine.InputReader.RunningEvent += OnRunning;
         stateMachine.InputReader.JumpEvent += OnJump;
+        stateMachine.InputReader.EquipWeapon += OnEquipWeapon;
 
         stateMachine.Animator.CrossFadeInFixedTime(FreeLookBlendTreeHash, CrossFadeDuration);
         
@@ -41,6 +44,19 @@ public class PlayerFreeLookState : PlayerBaseState
         if (stateMachine.InputReader.MovementValue == Vector2.zero)
         {
             stateMachine.Animator.SetFloat(FreeLookSpeedHash, 0, AnimatorDampTime, deltaTime);
+            stateMachine.IsRunning = false;
+            return;
+        }
+
+        if(stateMachine.IsRunning)
+        {
+            Move(movement * stateMachine.RunningMovementSpeed, deltaTime);
+            stateMachine.Animator.SetFloat(FreeLookSpeedHash, 2, AnimatorDampTime, deltaTime);
+        }
+
+        if (!stateMachine.Controller.isGrounded)
+        {
+            stateMachine.SwitchState(new PlayerFallingState(stateMachine));
             return;
         }
         
@@ -51,7 +67,9 @@ public class PlayerFreeLookState : PlayerBaseState
 
     public override void Exit()
     {
+        // stateMachine.InputReader.RunningEvent -= OnRunning;
         stateMachine.InputReader.JumpEvent -= OnJump;
+        stateMachine.InputReader.EquipWeapon -= OnEquipWeapon;
     }
 
     private Vector3 CalculateMove()
@@ -77,4 +95,61 @@ public class PlayerFreeLookState : PlayerBaseState
     {
         stateMachine.SwitchState(new PlayerJumpState(stateMachine));
     }
+
+    private void OnEquipWeapon()
+    {
+        stateMachine.isWeaponEquip = !stateMachine.isWeaponEquip;
+        
+        Debug.Log(stateMachine.isWeaponEquip);
+
+        if (stateMachine.isWeaponEquip)
+        {
+            EquipWeapon();
+        }
+        else
+        {
+            UnEquipWeapon();
+        }
+    }
+
+    void EquipWeapon()
+    {
+        if (stateMachine.weaponUnequipPosition.childCount > 0)
+        {
+            GameObject weapon = stateMachine.weaponUnequipPosition.GetChild(0).gameObject;
+            weapon.transform.SetParent(stateMachine.weaponEquipPosition);
+            weapon.transform.localPosition = Vector3.zero;
+            weapon.transform.localRotation = Quaternion.Euler(0, 0, -90);
+            SetGlobalScale(weapon.transform, new Vector3(0.15f, 0.15f, 0.15f));
+            stateMachine.isWeaponEquip = true;
+        }
+    }
+
+    void UnEquipWeapon()
+    {
+        if (stateMachine.weaponEquipPosition.childCount > 0)
+        {
+            GameObject weapon = stateMachine.weaponEquipPosition.GetChild(0).gameObject;
+            weapon.transform.SetParent(stateMachine.weaponUnequipPosition);
+            weapon.transform.localPosition = Vector3.zero;
+            weapon.transform.localRotation = quaternion.identity;
+            SetGlobalScale(weapon.transform, new Vector3(0.15f, 0.15f, 0.15f));
+            stateMachine.isWeaponEquip = false;
+        }
+    }
+    
+    private void SetGlobalScale(Transform transform, Vector3 globalScale)
+    {
+        transform.localScale = Vector3.one;
+        transform.localScale = new Vector3(
+            globalScale.x / transform.lossyScale.x,
+            globalScale.y / transform.lossyScale.y,
+            globalScale.z / transform.lossyScale.z
+        );
+    }
+
+    // private void OnRunning() 
+    // {
+    //     stateMachine.SwitchState(new PlayerRunningState(stateMachine));
+    // }
 }

@@ -81,6 +81,24 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Running"",
+                    ""type"": ""Button"",
+                    ""id"": ""5b45bde0-e39c-4851-adce-d21cd6c4797d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""EquipAndUnequipWeapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""390572d5-b60c-4e85-8ba1-11d749cabb33"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -193,6 +211,61 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6e8f3f91-ee26-4a48-a5b3-2ce60ee2b328"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Running"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0071d9df-4d3a-4f5b-9dff-a6ae2374bb39"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Running"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7e075924-d286-4cec-8509-14647a483842"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Running"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cf81bb4a-3d40-4486-95ef-a87ad500fe83"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""EquipAndUnequipWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e477d147-5fdd-4519-8aac-7744b8a45d06"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""EquipAndUnequipWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -218,6 +291,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Gameplay_Movement = m_Gameplay.FindAction("Movement", throwIfNotFound: true);
         m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
         m_Gameplay_Look = m_Gameplay.FindAction("Look", throwIfNotFound: true);
+        m_Gameplay_Running = m_Gameplay.FindAction("Running", throwIfNotFound: true);
+        m_Gameplay_EquipAndUnequipWeapon = m_Gameplay.FindAction("EquipAndUnequipWeapon", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -328,6 +403,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Movement;
     private readonly InputAction m_Gameplay_Jump;
     private readonly InputAction m_Gameplay_Look;
+    private readonly InputAction m_Gameplay_Running;
+    private readonly InputAction m_Gameplay_EquipAndUnequipWeapon;
     public struct GameplayActions
     {
         private @Controls m_Wrapper;
@@ -335,6 +412,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @Movement => m_Wrapper.m_Gameplay_Movement;
         public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
         public InputAction @Look => m_Wrapper.m_Gameplay_Look;
+        public InputAction @Running => m_Wrapper.m_Gameplay_Running;
+        public InputAction @EquipAndUnequipWeapon => m_Wrapper.m_Gameplay_EquipAndUnequipWeapon;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -353,6 +432,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Look.started += instance.OnLook;
             @Look.performed += instance.OnLook;
             @Look.canceled += instance.OnLook;
+            @Running.started += instance.OnRunning;
+            @Running.performed += instance.OnRunning;
+            @Running.canceled += instance.OnRunning;
+            @EquipAndUnequipWeapon.started += instance.OnEquipAndUnequipWeapon;
+            @EquipAndUnequipWeapon.performed += instance.OnEquipAndUnequipWeapon;
+            @EquipAndUnequipWeapon.canceled += instance.OnEquipAndUnequipWeapon;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -366,6 +451,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Look.started -= instance.OnLook;
             @Look.performed -= instance.OnLook;
             @Look.canceled -= instance.OnLook;
+            @Running.started -= instance.OnRunning;
+            @Running.performed -= instance.OnRunning;
+            @Running.canceled -= instance.OnRunning;
+            @EquipAndUnequipWeapon.started -= instance.OnEquipAndUnequipWeapon;
+            @EquipAndUnequipWeapon.performed -= instance.OnEquipAndUnequipWeapon;
+            @EquipAndUnequipWeapon.canceled -= instance.OnEquipAndUnequipWeapon;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -410,5 +501,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
+        void OnRunning(InputAction.CallbackContext context);
+        void OnEquipAndUnequipWeapon(InputAction.CallbackContext context);
     }
 }

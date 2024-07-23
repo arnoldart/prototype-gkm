@@ -51,5 +51,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "prototype-gkm.sln"
+    "dotnet.defaultSolution": "prototype-gkm.sln",
+    "dotnet.preferCSharpExtension": true
 }
